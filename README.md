@@ -1,2 +1,11 @@
 # pojo-to-markdown
 Java Library for mapping POJO to markdown
+
+Chciałbym żebyś zaplanował naszą bibliotekę. Chciałbym aby pozwalała ona za pomocą adnotacji konfigurować output do md. Chcę abyśmy Mieli ObjectMdMapper, który będzie miał metodę do tworzenia Stringa w formacie md. Na początku niech będzie jedna metoda podobnie jak w jackson writeValueAsString, później dorobimy pisanie do streama i do pliku. Chcę abyśmy mieli wsparcie dla następującyh featurów markdownu:
+1. Headings. I tutaj mamy adnotację @Heading(level=1-6, value=opcjonalna wartosc), jeśli wartosc jest podana to uzywamy wartosci, jesli nie i jest na polu typu string to uzywamy wartosci string jako heading, jesli na innym typie to w tym typie musi byc dokladnie jedno pole z adnotacja HeadingValue na polu typu string i wtedy ten string jest wartoscia
+2. Paragraphs. Adnotacja @Paragraph(order=0...n) dziala na polach typu string lub Markdown (ponizej) tylko, i kazdy paragraph jest wypluwany do md jako pargraf zgodnie z kolejnoscia okreslona w order.
+3. Line breaks, Jeśli w stringu jest znak nowej linii \n no to standardowo traktuj to jako nowa linia w md.
+4. Bold oraz Italic. Tutaj chciałbym abyśmy mieli taki fluent interface. Czyli nowy typ Markdown i moliwość pisania w stylu. Markdown.init().b("ala w boldzie: " ).t("ma kota o imieniu ").i("felek w italiku"). Markdown niech tez ma opcje .newLine().newParagraph() oraz opcja dla blockquote, np. blockquote() default z level 0 oraz blockquote(2) czyli np. w tym wypadku z level 2.
+5. Blockquotes. @BlockQuote(level=0...n - default 0, order) na typie String lub Markdown order traktowany tak samo jak paragraph, czyli Balocquote jest tak jak paragraf tylko z dodanym > blockquote.
+6. OrderedList. Adontacja @OrderedList. Adnotacja moze byc na List<String> albo na List<Markdown> dlatego tez chcialbym aby Markdown mial nowa opcje zeby mozna bylo robic nesting, np. Markdown.init().orderedList(List<String> lub List<Markdown>)
+7. UnorderList podobnie jak order list tylko UnorderList adontoacja i Markdown.init().unorderedList
