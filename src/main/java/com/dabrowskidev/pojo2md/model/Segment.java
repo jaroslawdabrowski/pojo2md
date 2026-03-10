@@ -47,6 +47,10 @@ public sealed interface Segment permits
     }
 
     record BlockquoteSegment(int level, List<Segment> inner) implements Segment {
+        public BlockquoteSegment {
+            inner = List.copyOf(inner);
+        }
+
         public String render() {
             String prefix = ">".repeat(level) + " ";
             String innerRendered = inner.stream()
@@ -59,6 +63,10 @@ public sealed interface Segment permits
     }
 
     record OrderedListSegment(List<?> items) implements Segment {
+        public OrderedListSegment {
+            items = List.copyOf(items);
+        }
+
         public String render() {
             StringBuilder sb = new StringBuilder();
             for (int i = 0; i < items.size(); i++) {
@@ -70,6 +78,10 @@ public sealed interface Segment permits
     }
 
     record UnorderedListSegment(List<?> items) implements Segment {
+        public UnorderedListSegment {
+            items = List.copyOf(items);
+        }
+
         public String render() {
             StringBuilder sb = new StringBuilder();
             for (int i = 0; i < items.size(); i++) {
