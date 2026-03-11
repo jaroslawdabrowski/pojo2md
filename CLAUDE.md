@@ -13,10 +13,10 @@ Java library for generating Markdown from POJOs (similar to how Jackson generate
 ## Commands
 
 ```bash
-# Build
-./mvnw clean package
+# Build and run full CI (tests + PMD + SpotBugs) — requires Java 21
+export JAVA_HOME=$(/usr/libexec/java_home -v 21) && ./mvnw verify -Pci
 
-# Run all tests
+# Run all tests only (works with any Java version)
 ./mvnw test
 
 # Run a single test class
@@ -25,6 +25,8 @@ Java library for generating Markdown from POJOs (similar to how Jackson generate
 # Run a single test method
 ./mvnw test -Dtest=MyTestClass#myMethod
 ```
+
+> **Note:** PMD and SpotBugs require Java 21. The system default may be Java 25 (which is not supported). Always set `JAVA_HOME` to Java 21 before running `-Pci`.
 
 ## Stack
 
@@ -42,37 +44,50 @@ Java library for generating Markdown from POJOs (similar to how Jackson generate
 ```
 com.dabrowskidev.pojo2md
 ├── ObjectMdMapper          Entry point — writeValueAsString(Object)
-├── annotation/             @Heading, @HeadingValue, @Paragraph, @BlockQuote, @OrderedList, @UnorderedList
+├── annotation/             @Heading, @Paragraph, @BlockQuote, @OrderedList, @UnorderedList, @Section
 ├── builder/
-│   └── Markdown            Fluent builder and POJO field type; implements Renderable
+│   └── Markdown            Fluent inline builder; implements Renderable
 ├── model/
 │   ├── Renderable          Interface implemented by Markdown to avoid circular deps with Segment
-│   └── Segment             Sealed interface with all inline segment types as nested records
+│   └── Segment             Sealed interface: PlainSegment, BoldSegment, ItalicSegment, NewLineSegment
 ├── render/
-│   ├── FieldElement        record(field, annotation, declarationIndex, sortKey)
-│   ├── ElementRenderer     Dispatches FieldElement → rendered String per annotation type
-│   └── HeadingResolver     Resolves heading text for @Heading (explicit value / String field / @HeadingValue)
+│   ├── FieldElement        record(field, heading, contentAnnotation, declarationIndex)
+│   ├── ElementRenderer     Two-phase render: heading prefix + content dispatch
+│   └── HeadingResolver     Returns heading.value()
 └── exception/
     └── MappingException    Unchecked; wraps reflection errors and validation failures
 ```
 
 ### Rendering pipeline (ObjectMdMapper)
 1. `getDeclaredFields()` — preserves field declaration order
-2. Per field: detect single recognized annotation (>1 → `MappingException`)
-3. Sort by field declaration index
+2. Per field: extract `@Heading` (optional) + one content annotation (optional); both together allowed
+3. Field is included if it has `@Heading` OR a content annotation; otherwise skipped (no auto-detection)
+4. Sort by field declaration index
 5. Render each via `ElementRenderer`, join blocks with `\n\n`
 
 ### Markdown fluent builder
-`Markdown.of().b("bold").t(" text").i("italic")` — each method appends a `Segment`.
-`.blockquote(level)` wraps all previously accumulated segments into a `BlockquoteSegment` and resets the list.
-`.orderedList(List<?>)` / `.unorderedList(List<?>)` accept `List<String>` or `List<Markdown>`.
+`Markdown.of().b("bold").t(" text").i("italic").newLine()` — each method appends an inline `Segment`.
+Only inline formatting — no block-level methods (those belong to field-level annotations).
 
 ### Supported annotations
-| Annotation | Field types | Key attributes |
-|---|---|---|
-| `@Heading` | any | `level` (1–6), `value` (optional) |
-| `@HeadingValue` | String | marker; used inside nested classes for `@Heading` resolution |
-| `@Paragraph` | String, Markdown | — |
-| `@BlockQuote` | String, Markdown | `level` (default 1) |
-| `@OrderedList` | List\<String\>, List\<Markdown\> | — |
-| `@UnorderedList` | List\<String\>, List\<Markdown\> | — |
+
+| Annotation | Field types | Key attributes | Notes |
+|---|---|---|---|
+| `@Heading` | any | `level` (1–6), `value` (required) | Renders heading from `value`; field content rendered below. Stackable with content annotations. |
+| `@Paragraph` | String, Markdown | — | |
+| `@BlockQuote` | String, Markdown | `level` (default 1) | |
+| `@OrderedList` | List\<String\>, List\<Markdown\> | — | |
+| `@UnorderedList` | List\<String\>, List\<Markdown\> | — | |
+| `@Section` | POJO, List\<POJO\> | — | Embeds nested POJO(s) without a heading. Use `@Heading` alone when a heading is present. |
+
+### @Heading semantics
+- `value` is **required** — heading text always comes from the annotation, never from the field value
+- `@Heading` alone on a null field → renders just the heading (no content below)
+- `@Heading` on a String/Markdown field → renders heading, then field value below (if not null)
+- `@Heading` on a POJO/List field → renders heading, then nested content below (no `@Section` needed)
+- `@Heading` + content annotation (e.g. `@Heading + @UnorderedList`) → heading first, then annotation-driven content
+
+### @Section semantics
+- Use when you want to embed a nested POJO or `List<POJO>` **without** a heading
+- `@Heading` alone is sufficient when a heading is present — `@Section` is redundant in that case
+- Unannotated POJO/List fields are **always skipped**
