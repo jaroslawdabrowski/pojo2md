@@ -22,6 +22,7 @@ public class ObjectMdMapper {
 
         for (int i = 0; i < declaredFields.length; i++) {
             Field field = declaredFields[i];
+            if (java.lang.reflect.Modifier.isStatic(field.getModifiers())) continue;
             FieldElement element = buildFieldElement(field, i);
             if (element != null) {
                 elements.add(element);

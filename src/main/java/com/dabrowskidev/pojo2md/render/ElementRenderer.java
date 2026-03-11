@@ -69,10 +69,15 @@ public class ElementRenderer {
                     .map(nestedRenderer)
                     .collect(Collectors.joining("\n\n"));
         }
+        if (value instanceof String || value instanceof Markdown) {
+            throw new MappingException(
+                    "@Section cannot be used on String or Markdown fields; use @Paragraph instead");
+        }
         return nestedRenderer.apply(value);
     }
 
     private String renderParagraph(Object value) {
+        if (value == null) return "";
         return switch (value) {
             case Markdown m -> m.render();
             case String s -> normalizeLineBreaks(s);
@@ -82,6 +87,7 @@ public class ElementRenderer {
     }
 
     private String renderBlockQuote(Object value, int level) {
+        if (value == null) return "";
         String prefix = ">".repeat(level) + " ";
         String raw = switch (value) {
             case Markdown m -> m.render();
@@ -89,6 +95,7 @@ public class ElementRenderer {
             default -> throw new MappingException(
                     "Expected String or Markdown, got: " + value.getClass().getSimpleName());
         };
+        if (raw.isBlank()) return "";
         return Arrays.stream(raw.split("\n", -1))
                 .map(line -> prefix + line)
                 .collect(Collectors.joining("\n"));
@@ -109,16 +116,19 @@ public class ElementRenderer {
     }
 
     private List<?> asList(Object value, FieldElement element) {
+        String annotation = "@" + element.contentAnnotation().annotationType().getSimpleName();
+        String field = element.field().getName();
+        if (value == null) {
+            throw new MappingException("Field '" + field + "' annotated with " + annotation + " is null");
+        }
         if (!(value instanceof List<?> list)) {
-            throw new MappingException(
-                    "Field '" + element.field().getName() + "' annotated with @"
-                    + element.contentAnnotation().annotationType().getSimpleName()
-                    + " must be of type List");
+            throw new MappingException("Field '" + field + "' annotated with " + annotation + " must be of type List");
         }
         return list;
     }
 
     private String renderItem(Object item) {
+        if (item == null) return "";
         return switch (item) {
             case Markdown m -> m.render();
             case String s -> s;
