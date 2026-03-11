@@ -39,7 +39,6 @@ public class ElementRenderer {
     }
 
     private String renderContent(FieldElement element, Object value) {
-        if (element.isNested()) return renderNested(value);
         if (element.contentAnnotation() == null) {
             return renderByFieldType(value);
         }
@@ -48,6 +47,7 @@ public class ElementRenderer {
             case BlockQuote bq -> renderBlockQuote(value, bq.level());
             case OrderedList ol -> renderOrderedList(value, element);
             case UnorderedList ul -> renderUnorderedList(value, element);
+            case Section s -> renderNested(value);
             default -> throw new MappingException("Unknown annotation type: " + element.contentAnnotation());
         };
     }

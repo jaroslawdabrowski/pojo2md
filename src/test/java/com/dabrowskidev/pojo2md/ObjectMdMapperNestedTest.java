@@ -34,6 +34,7 @@ class ObjectMdMapperNestedTest {
     static class SingleNested {
         @Heading(level = 1, value = "Doc")
         String title = null;
+        @Section
         AgendaItem item = new AgendaItem("Details", List.of("Dave"));
     }
 
@@ -48,7 +49,7 @@ class ObjectMdMapperNestedTest {
     }
 
     @Test
-    void listOfPojoAutoDetected() {
+    void listOfPojoWithHeading() {
         String result = mapper.writeValueAsString(new Meeting());
         assertThat(result).isEqualTo("""
                 ## Agenda
@@ -64,7 +65,7 @@ class ObjectMdMapperNestedTest {
     }
 
     @Test
-    void singleNestedPojoAutoDetected() {
+    void singleNestedPojoWithSection() {
         String result = mapper.writeValueAsString(new SingleNested());
         assertThat(result).isEqualTo("""
                 # Doc
@@ -75,7 +76,7 @@ class ObjectMdMapperNestedTest {
     }
 
     @Test
-    void fieldWithoutRecognizedAnnotationsInTypeIsSkipped() {
+    void unannotatedFieldIsSkipped() {
         String result = mapper.writeValueAsString(new WithUnannotatedField());
         assertThat(result).isEqualTo("hello");
     }
