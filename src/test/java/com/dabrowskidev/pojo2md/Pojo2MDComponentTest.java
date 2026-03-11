@@ -1,12 +1,16 @@
 package com.dabrowskidev.pojo2md;
 
-import com.dabrowskidev.pojo2md.annotation.*;
-import com.dabrowskidev.pojo2md.builder.Markdown;
-import org.junit.jupiter.api.Test;
-
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import org.junit.jupiter.api.Test;
+
+import com.dabrowskidev.pojo2md.annotation.BlockQuote;
+import com.dabrowskidev.pojo2md.annotation.Heading;
+import com.dabrowskidev.pojo2md.annotation.OrderedList;
+import com.dabrowskidev.pojo2md.annotation.Paragraph;
+import com.dabrowskidev.pojo2md.annotation.UnorderedList;
+import com.dabrowskidev.pojo2md.builder.Markdown;
 
 class Pojo2MDComponentTest {
 
@@ -15,6 +19,10 @@ class Pojo2MDComponentTest {
     static class AgendaItem {
         @Heading(level = 3)
         String title;
+
+        @Heading(level=4)
+        String participatnsHeader = "Participants";
+
         @UnorderedList
         List<String> participants;
 
@@ -98,18 +106,26 @@ class Pojo2MDComponentTest {
 
                         ### Status Update
 
+                        #### Participants
+
                         - Alice Smith
                         - Bob Jones
 
                         ### Blockers
 
+                        #### Participants
+
                         - Carol White
 
                         ### Q2 Roadmap
 
+                        #### Participants
+
                         - Alice Smith
 
                         ### Design Review
+
+                        #### Participants
 
                         - Carol White
                         - Dave Brown
