@@ -7,9 +7,9 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class ObjectMdMapperOrderingTest {
+class MarkdownMapperOrderingTest {
 
-    private final ObjectMdMapper mapper = new ObjectMdMapper();
+    private final MarkdownMapper mapper = new MarkdownMapper();
 
     static class MixedPojo {
         @Heading(level = 1, value = "Title")

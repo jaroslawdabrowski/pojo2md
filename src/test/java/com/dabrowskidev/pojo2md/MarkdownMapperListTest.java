@@ -9,9 +9,9 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class ObjectMdMapperListTest {
+class MarkdownMapperListTest {
 
-    private final ObjectMdMapper mapper = new ObjectMdMapper();
+    private final MarkdownMapper mapper = new MarkdownMapper();
 
     static class OrderedStringsPojo {
         @OrderedList

@@ -12,7 +12,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class ObjectMdMapper {
+public class MarkdownMapper {
 
     private final ElementRenderer renderer = new ElementRenderer(this::writeValueAsString);
 

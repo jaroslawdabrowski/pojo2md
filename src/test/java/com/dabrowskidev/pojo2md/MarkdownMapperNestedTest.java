@@ -7,9 +7,9 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class ObjectMdMapperNestedTest {
+class MarkdownMapperNestedTest {
 
-    private final ObjectMdMapper mapper = new ObjectMdMapper();
+    private final MarkdownMapper mapper = new MarkdownMapper();
 
     static class AgendaItem {
         @Paragraph

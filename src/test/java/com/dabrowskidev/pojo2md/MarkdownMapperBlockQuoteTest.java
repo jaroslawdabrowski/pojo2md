@@ -7,9 +7,9 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class ObjectMdMapperBlockQuoteTest {
+class MarkdownMapperBlockQuoteTest {
 
-    private final ObjectMdMapper mapper = new ObjectMdMapper();
+    private final MarkdownMapper mapper = new MarkdownMapper();
 
     static class Level1Pojo {
         @BlockQuote(level = 1)

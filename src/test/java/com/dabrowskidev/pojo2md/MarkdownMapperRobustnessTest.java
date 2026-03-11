@@ -10,9 +10,9 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-class ObjectMdMapperRobustnessTest {
+class MarkdownMapperRobustnessTest {
 
-    private final ObjectMdMapper mapper = new ObjectMdMapper();
+    private final MarkdownMapper mapper = new MarkdownMapper();
 
     // ─── NULL FIELD VALUES ────────────────────────────────────────────────────
 

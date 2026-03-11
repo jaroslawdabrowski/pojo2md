@@ -13,10 +13,10 @@ Java library for generating Markdown from POJOs (similar to how Jackson generate
 ## Commands
 
 ```bash
-# Build and run full CI (tests + PMD + SpotBugs) — requires Java 21
-export JAVA_HOME=$(/usr/libexec/java_home -v 21) && ./mvnw verify -Pci
+# Build and run full CI (tests + PMD + SpotBugs)
+./mvnw verify -Pci
 
-# Run all tests only (works with any Java version)
+# Run all tests only
 ./mvnw test
 
 # Run a single test class
@@ -26,7 +26,7 @@ export JAVA_HOME=$(/usr/libexec/java_home -v 21) && ./mvnw verify -Pci
 ./mvnw test -Dtest=MyTestClass#myMethod
 ```
 
-> **Note:** PMD and SpotBugs require Java 21. The system default may be Java 25 (which is not supported). Always set `JAVA_HOME` to Java 21 before running `-Pci`.
+> **Note:** System default Java is 21 — no need to set `JAVA_HOME`. Just use `./mvnw` directly.
 
 ## Stack
 
@@ -43,7 +43,7 @@ export JAVA_HOME=$(/usr/libexec/java_home -v 21) && ./mvnw verify -Pci
 
 ```
 com.dabrowskidev.pojo2md
-├── ObjectMdMapper          Entry point — writeValueAsString(Object)
+├── MarkdownMapper          Entry point — writeValueAsString(Object)
 ├── annotation/             @Heading, @Paragraph, @BlockQuote, @OrderedList, @UnorderedList, @Section
 ├── builder/
 │   └── Markdown            Fluent inline builder; implements Renderable
@@ -58,7 +58,7 @@ com.dabrowskidev.pojo2md
     └── MappingException    Unchecked; wraps reflection errors and validation failures
 ```
 
-### Rendering pipeline (ObjectMdMapper)
+### Rendering pipeline (MarkdownMapper)
 1. `getDeclaredFields()` — preserves field declaration order
 2. Per field: extract `@Heading` (optional) + one content annotation (optional); both together allowed
 3. Field is included if it has `@Heading` OR a content annotation; otherwise skipped (no auto-detection)

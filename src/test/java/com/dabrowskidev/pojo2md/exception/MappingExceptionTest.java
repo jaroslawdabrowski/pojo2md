@@ -1,6 +1,6 @@
 package com.dabrowskidev.pojo2md.exception;
 
-import com.dabrowskidev.pojo2md.ObjectMdMapper;
+import com.dabrowskidev.pojo2md.MarkdownMapper;
 import com.dabrowskidev.pojo2md.annotation.OrderedList;
 import com.dabrowskidev.pojo2md.annotation.Paragraph;
 import org.junit.jupiter.api.Test;
@@ -9,7 +9,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class MappingExceptionTest {
 
-    private final ObjectMdMapper mapper = new ObjectMdMapper();
+    private final MarkdownMapper mapper = new MarkdownMapper();
 
     static class MultipleAnnotationsPojo {
         @Paragraph

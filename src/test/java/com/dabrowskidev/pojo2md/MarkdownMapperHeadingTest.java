@@ -15,9 +15,9 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-class ObjectMdMapperHeadingTest {
+class MarkdownMapperHeadingTest {
 
-    private final ObjectMdMapper mapper = new ObjectMdMapper();
+    private final MarkdownMapper mapper = new MarkdownMapper();
 
     static class HeadingOnlyPojo {
         @Heading(level = 2, value = "Section Title")

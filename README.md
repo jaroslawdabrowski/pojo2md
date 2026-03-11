@@ -23,7 +23,7 @@ class Report {
     );
 }
 
-String md = new ObjectMdMapper().writeValueAsString(new Report());
+String md = new MarkdownMapper().writeValueAsString(new Report());
 ```
 
 Output:
@@ -298,7 +298,7 @@ class Meeting {
     String nextMeeting = "Next meeting scheduled for March 17, 2026 at 10:00 AM";
 }
 
-String md = new ObjectMdMapper().writeValueAsString(new Meeting());
+String md = new MarkdownMapper().writeValueAsString(new Meeting());
 ```
 
 Output:

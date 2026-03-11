@@ -14,7 +14,7 @@ import com.dabrowskidev.pojo2md.builder.Markdown;
 
 class Pojo2MDComponentTest {
 
-    private final ObjectMdMapper mapper = new ObjectMdMapper();
+    private final MarkdownMapper mapper = new MarkdownMapper();
 
     static class AgendaItem {
         @Paragraph

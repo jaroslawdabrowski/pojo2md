@@ -9,9 +9,9 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class ObjectMdMapperSectionTest {
+class MarkdownMapperSectionTest {
 
-    private final ObjectMdMapper mapper = new ObjectMdMapper();
+    private final MarkdownMapper mapper = new MarkdownMapper();
 
     static class Inner {
         @Paragraph
