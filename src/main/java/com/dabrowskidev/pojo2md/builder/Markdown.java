@@ -38,32 +38,6 @@ public class Markdown implements Renderable {
         return this;
     }
 
-    public Markdown newParagraph() {
-        segments.add(new Segment.NewParagraphSegment());
-        return this;
-    }
-
-    public Markdown blockquote() {
-        return blockquote(1);
-    }
-
-    public Markdown blockquote(int level) {
-        List<Segment> snapshot = new ArrayList<>(segments);
-        segments.clear();
-        segments.add(new Segment.BlockquoteSegment(level, snapshot));
-        return this;
-    }
-
-    public Markdown orderedList(List<?> items) {
-        segments.add(new Segment.OrderedListSegment(items));
-        return this;
-    }
-
-    public Markdown unorderedList(List<?> items) {
-        segments.add(new Segment.UnorderedListSegment(items));
-        return this;
-    }
-
     @Override
     public String render() {
         return segments.stream()

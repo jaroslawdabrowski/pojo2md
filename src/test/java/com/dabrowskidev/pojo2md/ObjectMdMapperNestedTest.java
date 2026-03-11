@@ -12,7 +12,7 @@ class ObjectMdMapperNestedTest {
     private final ObjectMdMapper mapper = new ObjectMdMapper();
 
     static class AgendaItem {
-        @Heading(level = 3)
+        @Paragraph
         String title;
         @UnorderedList
         List<String> participants;
@@ -24,8 +24,7 @@ class ObjectMdMapperNestedTest {
     }
 
     static class Meeting {
-        @Heading(level = 2)
-        String agenda = "Agenda";
+        @Heading(level = 2, value = "Agenda")
         List<AgendaItem> items = List.of(
                 new AgendaItem("Sprint Update", List.of("Alice", "Bob")),
                 new AgendaItem("Blockers", List.of("Carol"))
@@ -33,8 +32,8 @@ class ObjectMdMapperNestedTest {
     }
 
     static class SingleNested {
-        @Heading(level = 1)
-        String title = "Doc";
+        @Heading(level = 1, value = "Doc")
+        String title = null;
         AgendaItem item = new AgendaItem("Details", List.of("Dave"));
     }
 
@@ -54,12 +53,12 @@ class ObjectMdMapperNestedTest {
         assertThat(result).isEqualTo("""
                 ## Agenda
 
-                ### Sprint Update
+                Sprint Update
 
                 - Alice
                 - Bob
 
-                ### Blockers
+                Blockers
 
                 - Carol""");
     }
@@ -70,7 +69,7 @@ class ObjectMdMapperNestedTest {
         assertThat(result).isEqualTo("""
                 # Doc
 
-                ### Details
+                Details
 
                 - Dave""");
     }

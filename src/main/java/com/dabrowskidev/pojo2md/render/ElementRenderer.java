@@ -21,14 +21,43 @@ public class ElementRenderer {
     }
 
     public String render(FieldElement element, Object value) {
+        StringBuilder result = new StringBuilder();
+
+        if (element.heading() != null) {
+            result.append("#".repeat(element.heading().level()))
+                    .append(" ")
+                    .append(headingResolver.resolve(element.heading()));
+        }
+
+        String content = renderContent(element, value);
+        if (!content.isBlank()) {
+            if (!result.isEmpty()) result.append("\n\n");
+            result.append(content);
+        }
+
+        return result.toString();
+    }
+
+    private String renderContent(FieldElement element, Object value) {
         if (element.isNested()) return renderNested(value);
-        return switch (element.annotation()) {
-            case Heading h -> renderHeading(element.field(), value, h);
-            case Paragraph ignored -> renderParagraph(value);
+        if (element.contentAnnotation() == null) {
+            return renderByFieldType(value);
+        }
+        return switch (element.contentAnnotation()) {
+            case Paragraph p -> renderParagraph(value);
             case BlockQuote bq -> renderBlockQuote(value, bq.level());
-            case OrderedList ignored -> renderOrderedList(value, element);
-            case UnorderedList ignored -> renderUnorderedList(value, element);
-            default -> throw new MappingException("Unknown annotation type: " + element.annotation());
+            case OrderedList ol -> renderOrderedList(value, element);
+            case UnorderedList ul -> renderUnorderedList(value, element);
+            default -> throw new MappingException("Unknown annotation type: " + element.contentAnnotation());
+        };
+    }
+
+    private String renderByFieldType(Object value) {
+        if (value == null) return "";
+        return switch (value) {
+            case String s -> normalizeLineBreaks(s);
+            case Markdown m -> m.render();
+            default -> renderNested(value);
         };
     }
 
@@ -41,11 +70,6 @@ public class ElementRenderer {
                     .collect(Collectors.joining("\n\n"));
         }
         return nestedRenderer.apply(value);
-    }
-
-    private String renderHeading(java.lang.reflect.Field field, Object value, Heading heading) {
-        String text = headingResolver.resolve(field, value);
-        return "#".repeat(heading.level()) + " " + text;
     }
 
     private String renderParagraph(Object value) {
@@ -88,7 +112,7 @@ public class ElementRenderer {
         if (!(value instanceof List<?> list)) {
             throw new MappingException(
                     "Field '" + element.field().getName() + "' annotated with @"
-                    + element.annotation().annotationType().getSimpleName()
+                    + element.contentAnnotation().annotationType().getSimpleName()
                     + " must be of type List");
         }
         return list;

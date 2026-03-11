@@ -17,34 +17,28 @@ class Pojo2MDComponentTest {
     private final ObjectMdMapper mapper = new ObjectMdMapper();
 
     static class AgendaItem {
-        @Heading(level = 3)
-        String title;
+        @Paragraph
+        Markdown title;
 
-        @Heading(level=4)
-        String participatnsHeader = "Participants";
-
+        @Heading(level = 4, value = "Participants")
         @UnorderedList
         List<String> participants;
 
-        AgendaItem(String title, List<String> participants) {
-            this.title = title;
+        AgendaItem(String titleText, List<String> participants) {
+            this.title = Markdown.of().b(titleText);
             this.participants = participants;
         }
     }
 
     static class Meeting {
-        @Heading(level = 1)
-        String title = "Q1 Planning Meeting";
-
+        @Heading(level = 1, value = "Q1 Planning Meeting")
         @Paragraph
         Markdown meta = Markdown.of()
                 .b("Date:").t(" 2026-03-10").newLine()
                 .b("Location:").t(" Conference Room A").newLine()
                 .b("Duration:").t(" 60 minutes");
 
-        @Heading(level = 2)
-        String participantsHeading = "Participants";
-
+        @Heading(level = 2, value = "Participants")
         @UnorderedList
         List<String> participants = List.of(
                 "Alice Smith — Product Manager",
@@ -53,9 +47,7 @@ class Pojo2MDComponentTest {
                 "Dave Brown — QA"
         );
 
-        @Heading(level = 2)
-        String agendaHeading = "Agenda";
-
+        @Heading(level = 2, value = "Agenda")
         List<AgendaItem> agendaItems = List.of(
                 new AgendaItem("Status Update", List.of("Alice Smith", "Bob Jones")),
                 new AgendaItem("Blockers", List.of("Carol White")),
@@ -63,17 +55,13 @@ class Pojo2MDComponentTest {
                 new AgendaItem("Design Review", List.of("Carol White", "Dave Brown"))
         );
 
-        @Heading(level = 2)
-        String notesHeading = "Meeting Notes";
-
+        @Heading(level = 2, value = "Meeting Notes")
         @Paragraph
         Markdown statusUpdate = Markdown.of()
                 .b("Sprint Progress:").t(" 80% of planned tasks completed.").newLine()
                 .t("Key deliverables are on track for the March 15th deadline.");
 
-        @Heading(level = 3)
-        String actionItemsHeading = "Action Items";
-
+        @Heading(level = 3, value = "Action Items")
         @OrderedList
         List<String> actionItems = List.of(
                 "Bob to finalize API documentation by March 12th",
@@ -104,26 +92,26 @@ class Pojo2MDComponentTest {
 
                         ## Agenda
 
-                        ### Status Update
+                        **Status Update**
 
                         #### Participants
 
                         - Alice Smith
                         - Bob Jones
 
-                        ### Blockers
+                        **Blockers**
 
                         #### Participants
 
                         - Carol White
 
-                        ### Q2 Roadmap
+                        **Q2 Roadmap**
 
                         #### Participants
 
                         - Alice Smith
 
-                        ### Design Review
+                        **Design Review**
 
                         #### Participants
 

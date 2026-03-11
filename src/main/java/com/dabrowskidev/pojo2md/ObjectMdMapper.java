@@ -25,11 +25,9 @@ public class ObjectMdMapper {
 
         for (int i = 0; i < declaredFields.length; i++) {
             Field field = declaredFields[i];
-            Annotation recognized = findRecognizedAnnotation(field);
-            if (recognized != null) {
-                elements.add(new FieldElement(field, recognized, i));
-            } else if (hasRecognizedAnnotations(effectiveType(field))) {
-                elements.add(new FieldElement(field, null, i));
+            FieldElement element = buildFieldElement(field, i);
+            if (element != null) {
+                elements.add(element);
             }
         }
 
@@ -51,21 +49,33 @@ public class ObjectMdMapper {
                 .stripTrailing();
     }
 
-    private Annotation findRecognizedAnnotation(Field field) {
+    private FieldElement buildFieldElement(Field field, int index) {
+        Heading heading = field.getAnnotation(Heading.class);
+        Annotation contentAnnotation = findContentAnnotation(field);
+
+        if (heading != null || contentAnnotation != null) {
+            return new FieldElement(field, heading, contentAnnotation, index);
+        }
+        if (hasRecognizedAnnotations(effectiveType(field))) {
+            return new FieldElement(field, null, null, index);
+        }
+        return null;
+    }
+
+    private Annotation findContentAnnotation(Field field) {
         List<Annotation> found = new ArrayList<>();
         for (Annotation a : field.getAnnotations()) {
-            if (isRecognizedAnnotation(a)) found.add(a);
+            if (isContentAnnotation(a)) found.add(a);
         }
         if (found.size() > 1) {
             throw new MappingException(
-                    "Field '" + field.getName() + "' has multiple mapping annotations; only one is allowed");
+                    "Field '" + field.getName() + "' has multiple content annotations; only one is allowed");
         }
         return found.isEmpty() ? null : found.getFirst();
     }
 
-    private boolean isRecognizedAnnotation(Annotation a) {
-        return a instanceof Heading
-                || a instanceof Paragraph
+    private boolean isContentAnnotation(Annotation a) {
+        return a instanceof Paragraph
                 || a instanceof BlockQuote
                 || a instanceof OrderedList
                 || a instanceof UnorderedList;
@@ -82,7 +92,7 @@ public class ObjectMdMapper {
 
     private boolean hasRecognizedAnnotations(Class<?> type) {
         return Arrays.stream(type.getDeclaredFields())
-                .flatMap(f -> Arrays.stream(f.getAnnotations()))
-                .anyMatch(this::isRecognizedAnnotation);
+                .anyMatch(f -> f.getAnnotation(Heading.class) != null
+                        || Arrays.stream(f.getAnnotations()).anyMatch(this::isContentAnnotation));
     }
 }

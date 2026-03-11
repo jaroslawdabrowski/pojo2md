@@ -12,8 +12,8 @@ class ObjectMdMapperOrderingTest {
     private final ObjectMdMapper mapper = new ObjectMdMapper();
 
     static class MixedPojo {
-        @Heading(level = 1)
-        String title = "Title";
+        @Heading(level = 1, value = "Title")
+        String title = null;
         @BlockQuote(level = 1)
         String quote = "a quote";
         @Paragraph
