@@ -47,7 +47,7 @@ This report covers Q1 2026 performance.
 ```xml
 <dependency>
     <groupId>com.dabrowskidev</groupId>
-    <artifactId>pojo-to-markdown</artifactId>
+    <artifactId>pojo2md</artifactId>
     <version>0.1.0-SNAPSHOT</version>
 </dependency>
 ```

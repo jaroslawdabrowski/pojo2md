@@ -7,7 +7,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 Java library for generating Markdown from POJOs (similar to how Jackson generates JSON).
 
 - **Group ID:** `com.dabrowskidev`
-- **Artifact ID:** `pojo-to-markdown`
+- **Artifact ID:** `pojo2md`
 - **Main package:** `com.dabrowskidev.pojo2md`
 
 ## Commands
