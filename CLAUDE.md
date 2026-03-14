@@ -6,9 +6,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 Java library for generating Markdown from POJOs (similar to how Jackson generates JSON).
 
-- **Group ID:** `com.dabrowskidev`
+- **Group ID:** `io.github.jaroslawdabrowski`
 - **Artifact ID:** `pojo2md`
-- **Main package:** `com.dabrowskidev.pojo2md`
+- **Main package:** `io.github.jaroslawdabrowski.pojo2md`
 
 ## Commands
 
@@ -42,7 +42,7 @@ Java library for generating Markdown from POJOs (similar to how Jackson generate
 ## Architecture
 
 ```
-com.dabrowskidev.pojo2md
+io.github.jaroslawdabrowski.pojo2md
 ├── MarkdownMapper          Entry point — writeValueAsString(Object)
 ├── annotation/             @Heading, @Paragraph, @BlockQuote, @OrderedList, @UnorderedList, @Section
 ├── builder/

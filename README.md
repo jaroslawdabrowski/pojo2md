@@ -46,7 +46,7 @@ This report covers Q1 2026 performance.
 
 ```xml
 <dependency>
-    <groupId>com.dabrowskidev</groupId>
+    <groupId>io.github.jaroslawdabrowski</groupId>
     <artifactId>pojo2md</artifactId>
     <version>0.1.0-SNAPSHOT</version>
 </dependency>

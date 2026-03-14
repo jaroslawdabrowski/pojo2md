@@ -20,9 +20,33 @@ jobs:
           java-version: '21'
           distribution: 'temurin'
           cache: maven
-          server-id: github
-          server-username: GITHUB_ACTOR
-          server-password: GITHUB_TOKEN
+
+      - name: Configure Maven settings
+        run: |
+          mkdir -p ~/.m2
+          cat > ~/.m2/settings.xml << 'EOF'
+          <settings>
+            <servers>
+              <server>
+                <id>github</id>
+                <username>${env.GITHUB_ACTOR}</username>
+                <password>${env.GITHUB_TOKEN}</password>
+              </server>
+              <server>
+                <id>central</id>
+                <username>${env.CENTRAL_TOKEN_USERNAME}</username>
+                <password>${env.CENTRAL_TOKEN_PASSWORD}</password>
+              </server>
+              <server>
+                <id>gpg.passphrase</id>
+                <passphrase>${env.MAVEN_GPG_PASSPHRASE}</passphrase>
+              </server>
+            </servers>
+          </settings>
+          EOF
+
+      - name: Import GPG key
+        run: echo "${{ secrets.MAVEN_GPG_PRIVATE_KEY }}" | gpg --import --batch
 
       - name: Extract version from tag
         id: version
@@ -41,6 +65,14 @@ jobs:
         run: ./mvnw deploy -Pci,release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          MAVEN_GPG_PASSPHRASE: ${{ secrets.MAVEN_GPG_PASSPHRASE }}
+
+      - name: Publish to Maven Central
+        run: ./mvnw deploy -Prelease,central -DskipTests
+        env:
+          CENTRAL_TOKEN_USERNAME: ${{ secrets.CENTRAL_TOKEN_USERNAME }}
+          CENTRAL_TOKEN_PASSWORD: ${{ secrets.CENTRAL_TOKEN_PASSWORD }}
+          MAVEN_GPG_PASSPHRASE: ${{ secrets.MAVEN_GPG_PASSPHRASE }}
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2

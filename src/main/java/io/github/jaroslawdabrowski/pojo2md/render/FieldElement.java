@@ -1,0 +1,8 @@
+package io.github.jaroslawdabrowski.pojo2md.render;
+
+import io.github.jaroslawdabrowski.pojo2md.annotation.Heading;
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Field;
+
+public record FieldElement(Field field, Heading heading, Annotation contentAnnotation, int declarationIndex) {
+}
