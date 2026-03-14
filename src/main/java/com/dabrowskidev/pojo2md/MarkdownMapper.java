@@ -33,7 +33,6 @@ public class MarkdownMapper {
 
         return elements.stream()
                 .map(el -> {
-                    el.field().setAccessible(true);
                     try {
                         Object value = el.field().get(pojo);
                         return renderer.render(el, value);
@@ -52,6 +51,7 @@ public class MarkdownMapper {
         Annotation contentAnnotation = findContentAnnotation(field);
 
         if (heading != null || contentAnnotation != null) {
+            field.setAccessible(true);
             return new FieldElement(field, heading, contentAnnotation, index);
         }
         return null;
