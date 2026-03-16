@@ -91,3 +91,7 @@ Only inline formatting — no block-level methods (those belong to field-level a
 - Use when you want to embed a nested POJO or `List<POJO>` **without** a heading
 - `@Heading` alone is sufficient when a heading is present — `@Section` is redundant in that case
 - Unannotated POJO/List fields are **always skipped**
+
+## Release checklist
+
+Before or after pushing a tag, always update the version in `README.md` (Installation section) to match the released version.
