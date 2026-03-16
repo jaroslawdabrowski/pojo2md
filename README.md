@@ -1,5 +1,9 @@
 # pojo2md
 
+[![Maven Central](https://img.shields.io/maven-central/v/io.github.jaroslawdabrowski/pojo2md)](https://central.sonatype.com/artifact/io.github.jaroslawdabrowski/pojo2md)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Java](https://img.shields.io/badge/Java-21%2B-blue)](https://openjdk.org/)
+
 A Java library for generating Markdown from plain Java objects — annotation-driven, like Jackson for JSON but for Markdown output.
 
 Define your document structure as a plain Java class, annotate the fields, and call `writeValueAsString()`. The library handles the rest.
