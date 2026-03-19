@@ -277,6 +277,10 @@ Markdown body = Markdown.of()
 | `.t("text")` | `text` |
 | `.b("text")` | `**text**` |
 | `.i("text")` | `*text*` |
+| `.c("text")` | `` `text` `` |
+| `.link("text", "url")` | `[text](url)` |
+| `.link("text", "url", "title")` | `[text](url "title")` |
+| `.autoLink("url")` | `<url>` |
 | `.newLine()` | soft line break (`  \n`) |
 
 ---

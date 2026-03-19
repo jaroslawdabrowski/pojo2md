@@ -33,6 +33,26 @@ public class Markdown implements Renderable {
         return this;
     }
 
+    public Markdown c(String text) {
+        segments.add(new Segment.CodeSegment(text));
+        return this;
+    }
+
+    public Markdown link(String text, String url) {
+        segments.add(new Segment.LinkSegment(text, url, null));
+        return this;
+    }
+
+    public Markdown link(String text, String url, String title) {
+        segments.add(new Segment.LinkSegment(text, url, title));
+        return this;
+    }
+
+    public Markdown autoLink(String url) {
+        segments.add(new Segment.AutoLinkSegment(url));
+        return this;
+    }
+
     public Markdown newLine() {
         segments.add(new Segment.NewLineSegment());
         return this;

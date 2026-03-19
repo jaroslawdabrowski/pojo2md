@@ -27,9 +27,38 @@ class MarkdownBuilderTest {
     }
 
     @Test
+    void codeText() {
+        assertThat(Markdown.of().c("code").render()).isEqualTo("`code`");
+    }
+
+    @Test
+    void link() {
+        assertThat(Markdown.of().link("Duck Duck Go", "https://duckduckgo.com").render())
+                .isEqualTo("[Duck Duck Go](https://duckduckgo.com)");
+    }
+
+    @Test
+    void linkWithTitle() {
+        assertThat(Markdown.of().link("Duck Duck Go", "https://duckduckgo.com", "The best search engine").render())
+                .isEqualTo("[Duck Duck Go](https://duckduckgo.com \"The best search engine\")");
+    }
+
+    @Test
+    void autoLink() {
+        assertThat(Markdown.of().autoLink("https://www.markdownguide.org").render())
+                .isEqualTo("<https://www.markdownguide.org>");
+    }
+
+    @Test
+    void autoLinkEmail() {
+        assertThat(Markdown.of().autoLink("fake@example.com").render())
+                .isEqualTo("<fake@example.com>");
+    }
+
+    @Test
     void chain() {
-        assertThat(Markdown.of().b("bold").t(" and ").i("italic").render())
-                .isEqualTo("**bold** and *italic*");
+        assertThat(Markdown.of().b("Visit").t(" ").link("pojo2md", "https://github.com/jaroslawdabrowski/pojo2md").render())
+                .isEqualTo("**Visit** [pojo2md](https://github.com/jaroslawdabrowski/pojo2md)");
     }
 
     @Test
