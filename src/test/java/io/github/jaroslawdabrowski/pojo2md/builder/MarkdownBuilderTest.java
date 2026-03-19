@@ -32,6 +32,17 @@ class MarkdownBuilderTest {
     }
 
     @Test
+    void highlightText() {
+        assertThat(Markdown.of().h("very important words").render()).isEqualTo("==very important words==");
+
+    }
+
+    @Test
+    void strikethroughText() {
+        assertThat(Markdown.of().s("the world is flat").render()).isEqualTo("~~the world is flat~~");
+    }
+
+    @Test
     void link() {
         assertThat(Markdown.of().link("Duck Duck Go", "https://duckduckgo.com").render())
                 .isEqualTo("[Duck Duck Go](https://duckduckgo.com)");

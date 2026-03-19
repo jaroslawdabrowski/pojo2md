@@ -5,6 +5,8 @@ public sealed interface Segment permits
         Segment.BoldSegment,
         Segment.ItalicSegment,
         Segment.CodeSegment,
+        Segment.StrikethroughSegment,
+        Segment.HighlightSegment,
         Segment.LinkSegment,
         Segment.AutoLinkSegment,
         Segment.NewLineSegment {
@@ -32,6 +34,18 @@ public sealed interface Segment permits
     record CodeSegment(String text) implements Segment {
         public String render() {
             return "`" + text + "`";
+        }
+    }
+
+    record HighlightSegment(String text) implements Segment {
+        public String render() {
+            return "==" + text + "==";
+        }
+    }
+
+    record StrikethroughSegment(String text) implements Segment {
+        public String render() {
+            return "~~" + text + "~~";
         }
     }
 

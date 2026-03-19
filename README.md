@@ -265,10 +265,16 @@ The `Markdown` builder creates inline-formatted content for use with `@Paragraph
 
 ```java
 Markdown body = Markdown.of()
-    .b("Bold")       // **Bold**
-    .t(" normal ")   // normal text
-    .i("italic")     // *italic*
-    .newLine()       // soft line break (two spaces + \n)
+    .b("Bold")              // **Bold**
+    .t(" normal ")          // normal text
+    .i("italic")            // *italic*
+    .c("code")              // `code`
+    .s("strikethrough")     // ~~strikethrough~~
+    .h("highlight")         // ==highlight==
+    .link("site", "https://example.com")               // [site](https://example.com)
+    .link("site", "https://example.com", "My site")    // [site](https://example.com "My site")
+    .autoLink("https://example.com")                   // <https://example.com>
+    .newLine()              // soft line break (two spaces + \n)
     .t("next line");
 ```
 
@@ -278,6 +284,8 @@ Markdown body = Markdown.of()
 | `.b("text")` | `**text**` |
 | `.i("text")` | `*text*` |
 | `.c("text")` | `` `text` `` |
+| `.s("text")` | `~~text~~` |
+| `.h("text")` | `==text==` |
 | `.link("text", "url")` | `[text](url)` |
 | `.link("text", "url", "title")` | `[text](url "title")` |
 | `.autoLink("url")` | `<url>` |
