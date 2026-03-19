@@ -52,7 +52,7 @@ This report covers Q1 2026 performance.
 <dependency>
     <groupId>io.github.jaroslawdabrowski</groupId>
     <artifactId>pojo2md</artifactId>
-    <version>1.0.5</version>
+    <version>1.0.6</version>
 </dependency>
 ```
 
