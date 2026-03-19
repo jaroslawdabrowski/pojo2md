@@ -44,7 +44,7 @@ Java library for generating Markdown from POJOs (similar to how Jackson generate
 ```
 io.github.jaroslawdabrowski.pojo2md
 ├── MarkdownMapper          Entry point — writeValueAsString(Object)
-├── annotation/             @Heading, @Paragraph, @BlockQuote, @OrderedList, @UnorderedList, @Section
+├── annotation/             @Heading, @Paragraph, @BlockQuote, @OrderedList, @UnorderedList, @Section, @Table, @Column, Align
 ├── builder/
 │   └── Markdown            Fluent inline builder; implements Renderable
 ├── model/
@@ -53,7 +53,8 @@ io.github.jaroslawdabrowski.pojo2md
 ├── render/
 │   ├── FieldElement        record(field, heading, contentAnnotation, declarationIndex)
 │   ├── ElementRenderer     Two-phase render: heading prefix + content dispatch
-│   └── HeadingResolver     Returns heading.value()
+│   ├── HeadingResolver     Returns heading.value()
+│   └── TableRenderer       Renders List<POJO> as a Markdown table using @Column fields
 └── exception/
     └── MappingException    Unchecked; wraps reflection errors and validation failures
 ```
@@ -79,6 +80,8 @@ Only inline formatting — no block-level methods (those belong to field-level a
 | `@OrderedList` | List\<String\>, List\<Markdown\> | — | |
 | `@UnorderedList` | List\<String\>, List\<Markdown\> | — | |
 | `@Section` | POJO, List\<POJO\> | — | Embeds nested POJO(s) without a heading. Use `@Heading` alone when a heading is present. |
+| `@Table` | List\<POJO\> | — | Renders as a Markdown table; row POJO fields must be annotated with `@Column`. |
+| `@Column` | any (on row POJO fields) | `header` (required), `alignment` (default `NONE`) | Marks a field as a table column; `alignment`: `NONE`, `LEFT`, `CENTER`, `RIGHT`. |
 
 ### @Heading semantics
 - `value` is **required** — heading text always comes from the annotation, never from the field value
@@ -91,6 +94,16 @@ Only inline formatting — no block-level methods (those belong to field-level a
 - Use when you want to embed a nested POJO or `List<POJO>` **without** a heading
 - `@Heading` alone is sufficient when a heading is present — `@Section` is redundant in that case
 - Unannotated POJO/List fields are **always skipped**
+
+### @Table / @Column semantics
+- `@Table` on a `List<RowPojo>` field — row class is resolved from the generic type parameter
+- Each column field on the row class must be annotated with `@Column(header = "...")`
+- `alignment` controls the separator: `NONE` → `---`, `LEFT` → `:---`, `CENTER` → `:---:`, `RIGHT` → `---:`
+- Empty or all-null list → renders header + separator only (no data rows)
+- Null list → throws `MappingException`
+- Cell values: `null` → empty, `Markdown` → rendered then sanitized (newlines stripped, `|` escaped), `String`/other → toString then sanitized
+- Only `@Column`-annotated fields are rendered; declaration order is preserved
+- Allowed in table cells: plain text, **bold**, *italic*, inline code — no block-level elements (headings, lists, etc.)
 
 ## Release checklist
 

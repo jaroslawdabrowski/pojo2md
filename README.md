@@ -204,6 +204,57 @@ Details below.
 
 ---
 
+### `@Table` / `@Column`
+
+Renders a `List<RowPojo>` as a Markdown table. Each column in the row class is declared with `@Column`.
+
+```java
+class Employee {
+    @Column(header = "Name")
+    String name;
+
+    @Column(header = "Role", alignment = Align.CENTER)
+    String role;
+
+    @Column(header = "Since", alignment = Align.RIGHT)
+    String since;
+}
+
+class Report {
+    @Heading(value = "Team")
+    @Table
+    List<Employee> employees = List.of(
+        new Employee("Alice", "Developer", "2020"),
+        new Employee("Bob", "Designer", "2022")
+    );
+}
+```
+
+```markdown
+## Team
+
+| Name | Role | Since |
+| --- | :---: | ---: |
+| Alice | Developer | 2020 |
+| Bob | Designer | 2022 |
+```
+
+**Column alignment** is controlled by `Align`:
+
+| Value | Separator | Example |
+|-------|-----------|---------|
+| `Align.NONE` (default) | `---` | left-aligned (default) |
+| `Align.LEFT` | `:---` | explicit left |
+| `Align.CENTER` | `:---:` | centered |
+| `Align.RIGHT` | `---:` | right-aligned |
+
+**Cell values** support plain `String`, `Markdown` (bold, italic, inline code), or any object via `toString()`.
+Pipe characters (`|`) are automatically escaped; newlines are collapsed to a space.
+
+An empty list renders the header and separator rows only (no data rows).
+
+---
+
 ## Inline Formatting with `Markdown`
 
 The `Markdown` builder creates inline-formatted content for use with `@Paragraph`, `@BlockQuote`, and list fields.
@@ -267,6 +318,23 @@ class AgendaItem {
     }
 }
 
+class ActionItem {
+    @Column(header = "Task")
+    String task;
+
+    @Column(header = "Owner", alignment = Align.CENTER)
+    String owner;
+
+    @Column(header = "Due", alignment = Align.RIGHT)
+    String due;
+
+    ActionItem(String task, String owner, String due) {
+        this.task = task;
+        this.owner = owner;
+        this.due = due;
+    }
+}
+
 class Meeting {
     @Heading(level = 1, value = "Q1 Planning Meeting")
     @Paragraph
@@ -292,10 +360,10 @@ class Meeting {
     );
 
     @Heading(level = 3, value = "Action Items")
-    @OrderedList
-    List<String> actionItems = List.of(
-            "Bob to finalize API documentation by March 12th",
-            "Carol to share updated mockups in Slack"
+    @Table
+    List<ActionItem> actionItems = List.of(
+            new ActionItem("Finalize API documentation", "Bob", "March 12th"),
+            new ActionItem("Share updated mockups in Slack", "Carol", "March 17th")
     );
 
     @BlockQuote
@@ -344,8 +412,10 @@ Output:
 
 ### Action Items
 
-1. Bob to finalize API documentation by March 12th
-2. Carol to share updated mockups in Slack
+| Task | Owner | Due |
+| --- | :---: | ---: |
+| Finalize API documentation | Bob | March 12th |
+| Share updated mockups in Slack | Carol | March 17th |
 
 > Next meeting scheduled for March 17, 2026 at 10:00 AM
 ```
@@ -362,11 +432,13 @@ Output:
 | `@OrderedList` | `List<String>`, `List<Markdown>` | — |
 | `@UnorderedList` | `List<String>`, `List<Markdown>` | — |
 | `@Section` | any POJO, `List<POJO>` | — |
+| `@Table` | `List<POJO>` | — |
+| `@Column` | any (on row POJO fields) | `header` (required), `alignment` (default `Align.NONE`) |
 
 ### Rules
 
 - A field with **no annotation** is always skipped.
-- A field may have **at most one** content annotation (`@Paragraph`, `@BlockQuote`, `@OrderedList`, `@UnorderedList`, `@Section`).
+- A field may have **at most one** content annotation (`@Paragraph`, `@BlockQuote`, `@OrderedList`, `@UnorderedList`, `@Section`, `@Table`).
 - `@Heading` may be **combined** with any content annotation.
 - Fields are rendered in **declaration order**.
 - Blocks are separated by a **blank line** (`\n\n`).
@@ -380,3 +452,5 @@ All mapping errors throw `MappingException` (unchecked):
 - Field has more than one content annotation
 - `@OrderedList` / `@UnorderedList` used on a non-`List` field
 - `@Paragraph` / `@BlockQuote` used on an unsupported type
+- `@Table` used on a null or non-`List` field
+- Row class has no `@Column`-annotated fields

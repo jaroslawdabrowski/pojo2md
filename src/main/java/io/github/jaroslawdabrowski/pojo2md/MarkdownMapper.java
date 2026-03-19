@@ -74,6 +74,7 @@ public class MarkdownMapper {
                 || a instanceof BlockQuote
                 || a instanceof OrderedList
                 || a instanceof UnorderedList
-                || a instanceof Section;
+                || a instanceof Section
+                || a instanceof Table;
     }
 }

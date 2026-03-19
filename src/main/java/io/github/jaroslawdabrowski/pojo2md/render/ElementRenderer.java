@@ -14,6 +14,7 @@ import java.util.stream.IntStream;
 public class ElementRenderer {
 
     private final HeadingResolver headingResolver = new HeadingResolver();
+    private final TableRenderer tableRenderer = new TableRenderer();
     private final Function<Object, String> nestedRenderer;
 
     public ElementRenderer(Function<Object, String> nestedRenderer) {
@@ -48,6 +49,7 @@ public class ElementRenderer {
             case OrderedList ol -> renderOrderedList(value, element);
             case UnorderedList ul -> renderUnorderedList(value, element);
             case Section s -> renderNested(value);
+            case Table t -> tableRenderer.render(element.field(), value);
             default -> throw new MappingException("Unknown annotation type: " + element.contentAnnotation());
         };
     }
