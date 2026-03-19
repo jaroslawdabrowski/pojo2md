@@ -7,9 +7,8 @@ import io.github.jaroslawdabrowski.pojo2md.exception.MappingException;
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.util.Arrays;
-import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Objects;
 
 public class TableRenderer {
 
@@ -27,11 +26,11 @@ public class TableRenderer {
 
         String header = buildRow(columns.stream().map(f -> f.getAnnotation(Column.class).header()).toList());
         String separator = buildRow(columns.stream()
-                .map(f -> (String) f.getAnnotation(Column.class).alignment().getSeparator())
+                .map(f -> f.getAnnotation(Column.class).alignment().getSeparator())
                 .toList());
 
         List<String> dataRows = rows.stream()
-                .filter(row -> row != null)
+                .filter(Objects::nonNull)
                 .map(row -> buildRow(columns.stream().map(col -> getCellValue(col, row)).toList()))
                 .toList();
 
@@ -52,20 +51,12 @@ public class TableRenderer {
         Field[] fields = rowClass.getDeclaredFields();
         List<Field> columns = Arrays.stream(fields)
                 .filter(f -> f.isAnnotationPresent(Column.class))
-                .sorted(Comparator.comparingInt(f -> indexOf(fields, f)))
                 .toList();
         if (columns.isEmpty()) {
             throw new MappingException("Row class '" + rowClass.getSimpleName() + "' has no @Column-annotated fields");
         }
         columns.forEach(f -> f.setAccessible(true));
         return columns;
-    }
-
-    private int indexOf(Field[] fields, Field target) {
-        for (int i = 0; i < fields.length; i++) {
-            if (fields[i].equals(target)) return i;
-        }
-        return -1;
     }
 
     private String getCellValue(Field col, Object row) {
