@@ -1,0 +1,113 @@
+<svg width="1200" height="628" viewBox="0 0 1200 628" xmlns="http://www.w3.org/2000/svg">
+
+  <!-- Background -->
+  <rect width="1200" height="628" fill="#1A1A1A"/>
+
+  <!-- Subtle dot grid background -->
+  <pattern id="dots" x="0" y="0" width="32" height="32" patternUnits="userSpaceOnUse">
+    <circle cx="1" cy="1" r="1" fill="#2A2A2A"/>
+  </pattern>
+  <rect width="1200" height="628" fill="url(#dots)"/>
+
+  <!-- Orange accent line at top -->
+  <rect x="0" y="0" width="1200" height="6" fill="#CC4A08"/>
+  <rect x="0" y="6" width="1200" height="1.5" fill="#9A3606"/>
+
+  <!-- Vertical separator -->
+  <line x1="740" y1="40" x2="740" y2="588" stroke="#2E2E2E" stroke-width="1"/>
+
+  <!-- ─── LEFT: TEXT CONTENT ─── -->
+
+  <!-- Eyebrow label -->
+  <text x="80" y="110" font-family="Georgia, serif" font-size="13" letter-spacing="5" fill="#CC4A08">ANNOTATION-DRIVEN LIBRARY</text>
+
+  <!-- Main title -->
+  <text x="80" y="200" font-family="Georgia, 'Times New Roman', serif" font-size="78" font-weight="bold" fill="#FFFFFF">Jackson for</text>
+  <text x="80" y="295" font-family="Georgia, 'Times New Roman', serif" font-size="78" font-weight="bold" fill="#F0DC55">Markdown</text>
+
+  <!-- Subtitle -->
+  <text x="80" y="365" font-family="Georgia, serif" font-size="24" fill="#888888">A Java Library for LLM-Ready</text>
+  <text x="80" y="397" font-family="Georgia, serif" font-size="24" fill="#888888">Structured Prompts</text>
+
+  <!-- Code snippet decoration -->
+  <rect x="80" y="432" width="610" height="112" rx="6" fill="#111111" opacity="0.8"/>
+  <rect x="80" y="432" width="4" height="112" rx="2" fill="#CC4A08"/>
+  <text x="100" y="457" font-family="'Courier New', monospace" font-size="14" fill="#CC4A08">@Heading<tspan fill="#888888">(level = 1, value = </tspan><tspan fill="#90EE90">"Order Report"</tspan><tspan fill="#888888">)</tspan></text>
+  <text x="100" y="477" font-family="'Courier New', monospace" font-size="14" fill="#CC4A08">@Table</text>
+  <text x="100" y="497" font-family="'Courier New', monospace" font-size="14" fill="#888888">List&lt;OrderItem&gt; items;</text>
+  <text x="100" y="523" font-family="'Courier New', monospace" font-size="14" fill="#F0DC55">mapper.<tspan fill="#AADDFF">writeValueAsString</tspan><tspan fill="#888888">(order)  </tspan><tspan fill="#555555">// → Markdown</tspan></text>
+
+  <!-- pojo2md badge -->
+  <text x="80" y="598" font-family="Georgia, serif" font-size="13" letter-spacing="2" fill="#555555">github.com/jaroslawdabrowski/pojo2md</text>
+
+  <!-- ─── RIGHT: STORK LOGO ─── -->
+  <g transform="translate(741, -5) scale(1.1)">
+
+    <!-- Stork body area — no parchment background, blends into dark cover -->
+
+    <!-- Ground shadow -->
+    <ellipse cx="192" cy="425" rx="90" ry="7" fill="rgba(0,0,0,0.15)"/>
+    <line x1="75" y1="422" x2="315" y2="422" stroke="#3A3A3A" stroke-width="1"/>
+
+    <!-- TAIL -->
+    <path d="M 128,292 Q 112,312 108,332 Q 119,317 132,298 Z" fill="white" stroke="#1A1A1A" stroke-width="1"/>
+    <path d="M 122,302 Q 104,325 102,346 Q 114,329 126,308 Z" fill="white" stroke="#1A1A1A" stroke-width="0.8"/>
+
+    <!-- BODY -->
+    <ellipse cx="192" cy="295" rx="68" ry="50" transform="rotate(3 192 295)" fill="white" stroke="#333333" stroke-width="1.8"/>
+
+    <!-- LEFT WING -->
+    <path d="M 150,285 Q 97,260 55,238 Q 67,260 92,273 Q 120,285 149,297 Z" fill="white" stroke="#333333" stroke-width="1.6"/>
+    <path d="M 55,238 Q 80,252 100,264 Q 82,261 67,255 Q 57,248 55,238 Z" fill="#1A1A1A"/>
+    <path d="M 68,256 Q 93,268 112,278 Q 94,274 77,267 Q 66,261 68,256 Z" fill="#1A1A1A" opacity="0.72"/>
+    <line x1="148" y1="289" x2="108" y2="272" stroke="#333" stroke-width="0.8" opacity="0.45"/>
+    <line x1="146" y1="294" x2="106" y2="278" stroke="#333" stroke-width="0.8" opacity="0.45"/>
+    <line x1="144" y1="299" x2="104" y2="284" stroke="#333" stroke-width="0.8" opacity="0.45"/>
+
+    <!-- RIGHT WING -->
+    <path d="M 240,278 Q 283,260 306,248 Q 297,263 279,273 Q 260,281 242,287 Z" fill="white" stroke="#333333" stroke-width="1.4"/>
+    <path d="M 306,248 Q 316,244 322,252 Q 314,249 307,256 Z" fill="#1A1A1A"/>
+    <path d="M 298,254 Q 311,249 320,258 Q 310,254 300,261 Z" fill="#1A1A1A" opacity="0.6"/>
+
+    <!-- NECK -->
+    <path d="M 238,272 Q 249,215 257,158" stroke="#333333" stroke-width="14" fill="none" stroke-linecap="round"/>
+    <path d="M 238,272 Q 249,215 257,158" stroke="white" stroke-width="10" fill="none" stroke-linecap="round"/>
+
+    <!-- HEAD -->
+    <ellipse cx="258" cy="151" rx="15" ry="12" fill="white" stroke="#333333" stroke-width="1.8"/>
+    <circle cx="267" cy="148" r="3.5" fill="#1A1A1A"/>
+    <circle cx="268" cy="147" r="1.3" fill="white"/>
+    <circle cx="267" cy="148" r="5.5" fill="none" stroke="#C83000" stroke-width="1" opacity="0.55"/>
+
+    <!-- BEAK -->
+    <path d="M 271,150 L 318,141 L 272,161 Z" fill="#CC4400" stroke="#882800" stroke-width="1"/>
+    <line x1="271" y1="155" x2="317" y2="146" stroke="#882800" stroke-width="0.9" opacity="0.55"/>
+
+    <!-- LEGS -->
+    <path d="M 180,340 Q 175,382 174,422" stroke="#CC4400" stroke-width="4" fill="none" stroke-linecap="round"/>
+    <path d="M 203,342 Q 209,384 213,422" stroke="#CC4400" stroke-width="4" fill="none" stroke-linecap="round"/>
+    <circle cx="175" cy="379" r="4.2" fill="#CC4400"/>
+    <circle cx="210" cy="381" r="4.2" fill="#CC4400"/>
+
+    <!-- Feet left -->
+    <line x1="174" y1="422" x2="149" y2="432" stroke="#CC4400" stroke-width="2.4" stroke-linecap="round"/>
+    <line x1="174" y1="422" x2="170" y2="436" stroke="#CC4400" stroke-width="2.4" stroke-linecap="round"/>
+    <line x1="174" y1="422" x2="188" y2="432" stroke="#CC4400" stroke-width="2.4" stroke-linecap="round"/>
+    <!-- Feet right -->
+    <line x1="213" y1="422" x2="192" y2="432" stroke="#CC4400" stroke-width="2.4" stroke-linecap="round"/>
+    <line x1="213" y1="422" x2="211" y2="436" stroke="#CC4400" stroke-width="2.4" stroke-linecap="round"/>
+    <line x1="213" y1="422" x2="228" y2="430" stroke="#CC4400" stroke-width="2.4" stroke-linecap="round"/>
+
+    <!-- Species label -->
+    <text x="192" y="455" text-anchor="middle" font-family="Georgia, serif" font-style="italic" font-size="10" fill="#555">Ciconia ciconia · White Stork</text>
+
+    <!-- pojo2md title above stork -->
+    <text x="192" y="135" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="38" font-weight="bold" letter-spacing="4" fill="#F0DC55">pojo2md</text>
+    <text x="192" y="100" text-anchor="middle" font-family="Georgia, serif" font-size="9" letter-spacing="4" fill="#666">ANNOTATION-DRIVEN LIBRARY</text>
+
+  </g>
+
+  <!-- Bottom orange strip -->
+  <rect x="0" y="620" width="1200" height="8" fill="#CC4A08"/>
+
+</svg>
